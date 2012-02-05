@@ -1,3 +1,14 @@
+var radial1;
+var radial2;
+var radial3;
+var radial4;
+var radial5;
+var radial6;
+var radial7;
+
+var defaultDesign=steelseries.FrameDesign.GLOSSY_METAL;
+var defaultBackgroundColor=steelseries.BackgroundColor.LIGHT_GRAY;
+
 function init() {
 	// Define some sections
 	var sections = Array(steelseries.Section(0, 25, 'rgba(0, 0, 220, 0.3)'),
@@ -8,16 +19,13 @@ function init() {
 	var areas = Array(steelseries.Section(75, 100, 'rgba(220, 0, 0, 0.3)'));
 
 	// Create one radial gauge
-	var radial1 = new steelseries.Radial('canvas1', {
-		section : sections,
-		area : areas,
-		titleString : 'Test',
-		unitString : 'Unit',
-		pointerType : steelseries.PointerType.TYPE8
+	radial1 = new steelseries.Clock('canvas1', {
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
 	});
 
 	// Create a second radial gauge
-	var radial2 = new steelseries.Radial('canvas2', {
+	radial2 = new steelseries.Radial('canvas2', {
 		gaugeType : steelseries.GaugeType.TYPE2,
 		maxValue : 50,
 		threshold : 40,
@@ -25,8 +33,8 @@ function init() {
 		area : Array(steelseries.Section(40, 50, 'rgba(255,0,0,0.5)')),
 		titleString : 'Test',
 		unitString : 'Unit',
-		frameDesign : steelseries.FrameDesign.CHROME,
-		backgroundColor : steelseries.BackgroundColor.LIGHT_GRAY,
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
 		pointerType : steelseries.PointerType.TYPE2,
 		pointerColor : steelseries.ColorDef.BLUE,
 		lcdColor : steelseries.LcdColor.BLUE2,
@@ -34,58 +42,69 @@ function init() {
 	});
 
 	// Create a radial bargraph gauge
-	var radial3 = new steelseries.RadialBargraph('canvas3', {
+	radial3 = new steelseries.RadialBargraph('canvas3', {
 		gaugeType : steelseries.GaugeType.TYPE3,
-		titleString : "Title",
-		unitString : "Unit",
-		frameDesign : steelseries.FrameDesign.BLACK_METAL,
-		backgroundColor : steelseries.BackgroundColor.LIGHT_GRAY,
+		maxValue : 60,
+		titleString : "Sekunden",
+		unitString : "",
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
 		valueColor : steelseries.ColorDef.YELLOW,
 		lcdColor : steelseries.LcdColor.YELLOW,
 		ledColor : steelseries.LedColor.YELLOW_LED,
 	});
 
-	var radial4 = new steelseries.Radial('canvas4', {
+	radial4 = new steelseries.Radial('canvas4', {
 		titleString : 'Temperatur',
 		unitString : '°C',
 		minValue: -50,
 		maxValue: 50,
-		frameDesign : steelseries.FrameDesign.BLACK_METAL,
-		backgroundColor : steelseries.BackgroundColor.LIGHT_GRAY,
+		thresHoldVisible: false,
+		minMeasuredValueVisible: true,
+		maxMeasuredValueVisible: true,
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
 		valueColor : steelseries.ColorDef.YELLOW,
 		lcdColor : steelseries.LcdColor.YELLOW,
 		ledColor : steelseries.LedColor.YELLOW_LED,
 	});
 
-	var radial5 = new steelseries.Radial('canvas5', {
+	radial5 = new steelseries.Radial('canvas5', {
 		titleString : 'Luftdruck',
 		unitString : 'hPa',
-		minValue: 900,
-		maxValue: 1100,
-		frameDesign : steelseries.FrameDesign.BLACK_METAL,
-		backgroundColor : steelseries.BackgroundColor.LIGHT_GRAY,
+		minValue: 930,
+		maxValue: 1070,
+		thresHoldVisible: false,
+		minMeasuredValueVisible: true,
+		maxMeasuredValueVisible: true,
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
 		valueColor : steelseries.ColorDef.YELLOW,
 		lcdColor : steelseries.LcdColor.YELLOW,
 		ledColor : steelseries.LedColor.YELLOW_LED,
 	});
 
-	var radial6 = new steelseries.Radial('canvas6', {
+	radial6 = new steelseries.Radial('canvas6', {
 		titleString : 'Wind',
 		unitString : 'm/s',
 		minValue: 0,
 		maxValue: 50,
-		frameDesign : steelseries.FrameDesign.BLACK_METAL,
-		backgroundColor : steelseries.BackgroundColor.LIGHT_GRAY,
+		thresHoldVisible: false,
+		minMeasuredValueVisible: true,
+		maxMeasuredValueVisible: true,
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
 		valueColor : steelseries.ColorDef.YELLOW,
 		lcdColor : steelseries.LcdColor.YELLOW,
 		ledColor : steelseries.LedColor.YELLOW_LED,
 	});
 
-	var radial7 = new steelseries.Compass('canvas7', {
+	radial7 = new steelseries.Compass('canvas7', {
 		titleString : 'Windrichtung',
 		unitString : '°',
-		frameDesign : steelseries.FrameDesign.BLACK_METAL,
-		backgroundColor : steelseries.BackgroundColor.LIGHT_GRAY,
+		thresHoldVisible: false,
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
 		valueColor : steelseries.ColorDef.YELLOW,
 		lcdColor : steelseries.LcdColor.YELLOW,
 		ledColor : steelseries.LedColor.YELLOW_LED,
@@ -95,10 +114,10 @@ function init() {
 	dashboard["Test1"]=radial1;
 	dashboard["Test2"]=radial2;
 	dashboard["Test3"]=radial3;
-	dashboard["Temperatur"]=radial4;
-	dashboard["Luftdruck"]=radial5;
-	dashboard["Wind"]=radial6;
-	dashboard["Windrichtung"]=radial7;
+	dashboard["EDDH.Temperatur"]=radial4;
+	dashboard["EDDH.Luftdruck"]=radial5;
+	dashboard["EDDH.Wind"]=radial6;
+	dashboard["EDDH.Windrichtung"]=radial7;
 	
 	
 	var url = "ws://localhost:61614/stomp";
@@ -117,7 +136,7 @@ function init() {
 		connect_callback = function() {
 			client.send("/queue/test", {priority: 9}, "Hello, Stomp");
 			id = client.subscribe("/topic/observations", callback);
-			// alert("Connected!");
+			alert("Connected!");
 		};
 
 		client.connect(login, passcode, connect_callback, error_callback);
@@ -131,8 +150,8 @@ function init() {
 				var data = message.body;
                 var payload = jQuery.parseJSON(data);
                 radial=dashboard[payload.key];
-                if (radial != undefined && payload.val != undefined && !isNaN(payload.val)) {
-                    radial.setValueAnimated(payload.val);
+                if (radial != undefined && payload.value != undefined && !isNaN(payload.value)) {
+                    radial.setValueAnimated(payload.value);
                 } else {
                     console.log(payload.radialvalue + " not a number");
                 }
@@ -157,4 +176,15 @@ function init() {
 		radial2.setValueAnimated(70);
 	}
 
+}
+function resetMinMax(gauge) {
+	gauge.resetMinMeasuredValue();
+	gauge.resetMaxMeasuredValue();
+}
+
+function resetAllMinMax() {
+	resetMinMax(radial4);
+	resetMinMax(radial5);
+	resetMinMax(radial6);
+	return false;
 }

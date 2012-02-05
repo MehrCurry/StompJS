@@ -87,7 +87,7 @@ Copyright (C) 2012 FuseSource, Inc. -- http://fusesource.com
       var klass,
         _this = this;
       if (typeof this.debug === "function") this.debug("Opening Web Socket...");
-      klass = WebSocketStompMock || WebSocket || MozWebSocket;
+      klass = WebSocketStompMock || WebSocket;
       this.ws = new klass(this.url);
       this.ws.binaryType = "arraybuffer";
       this.ws.onmessage = function(evt) {
