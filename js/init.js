@@ -5,6 +5,8 @@ var radial4;
 var radial5;
 var radial6;
 var radial7;
+var radial8;
+var radial9;
 
 var defaultDesign=steelseries.FrameDesign.GLOSSY_METAL;
 var defaultBackgroundColor=steelseries.BackgroundColor.LIGHT_GRAY;
@@ -72,6 +74,21 @@ function init() {
 	});
 
 	radial5 = new steelseries.Radial('canvas5', {
+		titleString : 'Taupunkt',
+		unitString : '°C',
+		minValue: -50,
+		maxValue: 50,
+		thresholdVisible: false,
+		minMeasuredValueVisible: true,
+		maxMeasuredValueVisible: true,
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
+		valueColor : steelseries.ColorDef.YELLOW,
+		lcdColor : steelseries.LcdColor.YELLOW,
+		ledColor : steelseries.LedColor.YELLOW_LED,
+	});
+
+	radial6 = new steelseries.Radial('canvas6', {
 		titleString : 'Luftdruck',
 		unitString : 'hPa',
 		minValue: 930,
@@ -86,7 +103,7 @@ function init() {
 		ledColor : steelseries.LedColor.YELLOW_LED,
 	});
 
-	radial6 = new steelseries.Radial('canvas6', {
+	radial7 = new steelseries.Radial('canvas7', {
 		titleString : 'Wind',
 		unitString : 'm/s',
 		minValue: 0,
@@ -101,10 +118,25 @@ function init() {
 		ledColor : steelseries.LedColor.YELLOW_LED,
 	});
 
-	radial7 = new steelseries.Compass('canvas7', {
+	radial8 = new steelseries.Compass('canvas8', {
 		titleString : 'Windrichtung',
 		unitString : '°',
 		thresholdVisible: false,
+		frameDesign : defaultDesign,
+		backgroundColor : defaultBackgroundColor,
+		valueColor : steelseries.ColorDef.YELLOW,
+		lcdColor : steelseries.LcdColor.YELLOW,
+		ledColor : steelseries.LedColor.YELLOW_LED,
+	});
+
+	radial9 = new steelseries.Radial('canvas9', {
+		titleString : 'Sicht',
+		unitString : 'km',
+		minValue: 0,
+		maxValue: 20,
+		thresholdVisible: false,
+		minMeasuredValueVisible: true,
+		maxMeasuredValueVisible: true,
 		frameDesign : defaultDesign,
 		backgroundColor : defaultBackgroundColor,
 		valueColor : steelseries.ColorDef.YELLOW,
@@ -117,18 +149,20 @@ function init() {
 	dashboard["Test2"]=radial2;
 	dashboard["Test3"]=radial3;
 	dashboard["EDDH.Temperatur"]=radial4;
-	dashboard["EDDH.Luftdruck"]=radial5;
-	dashboard["EDDH.Wind"]=radial6;
-	dashboard["EDDH.Windrichtung"]=radial7;
-	
-	
+	dashboard["EDDH.Taupunkt"]=radial5;
+	dashboard["EDDH.Luftdruck"]=radial6;
+	dashboard["EDDH.Wind"]=radial7;
+	dashboard["EDDH.Windrichtung"]=radial8;
+	dashboard["EDDH.Sicht"]=radial9;
+
+
 	var url = "ws://localhost:61614/stomp";
 	var client = Stomp.client(url);
 	var login = "";
 	var passcode = "";
 
 	radial2.setValueAnimated(20);
-	
+
 	try {
 		error_callback = function(error) {
 			// display the error's message header:
@@ -188,5 +222,8 @@ function resetAllMinMax() {
 	resetMinMax(radial4);
 	resetMinMax(radial5);
 	resetMinMax(radial6);
+	resetMinMax(radial7);
+	resetMinMax(radial8);
+	resetMinMax(radial9);
 	return false;
 }
