@@ -13,6 +13,7 @@ var radial12;
 
 var defaultDesign=steelseries.FrameDesign.GLOSSY_METAL;
 var defaultBackgroundColor=steelseries.BackgroundColor.LIGHT_GRAY;
+var dashboard = new Object();
 
 function init() {
 
@@ -187,17 +188,16 @@ function init() {
 		ledColor : steelseries.LedColor.YELLOW_LED,
 	});
 
-	var dashboard = new Object();
 	dashboard["Test1"]=radial1;
 	dashboard["Test2"]=radial2;
 	dashboard["Test3"]=radial3;
-	dashboard["EDDH.Temperatur"]=radial4;
-	dashboard["EDDH.Taupunkt"]=radial5;
-	dashboard["EDDH.Luftdruck"]=radial6;
-	dashboard["EDDH.Wind"]=radial7;
-	dashboard["EDDH.Windrichtung"]=radial8;
-	dashboard["EDDH.Sicht"]=radial9;
-	dashboard["MessagesPerMinute"]=radial10;
+	dashboard["EDDH.TEMPERATUR"]=radial4;
+	dashboard["EDDH.TAUPUNKT"]=radial5;
+	dashboard["EDDH.LUFTDRUCK"]=radial6;
+	dashboard["EDDH.WIND"]=radial7;
+	dashboard["EDDH.WINDRICHTUNG"]=radial8;
+	dashboard["EDDH.SICHT"]=radial9;
+	dashboard["Messages.DURCHSATZ"]=radial10;
 
 
 	var url = "ws://localhost:61614/stomp";
@@ -229,6 +229,9 @@ function init() {
 				// alert("got message with body " + message.body);
 				var data = message.body;
                 var payload = jQuery.parseJSON(data);
+                if (payload["de.gzockoll.prototype.camel.InstrumentConfiguration"] != undefined) {
+                	configureInstrument(payload["de.gzockoll.prototype.camel.InstrumentConfiguration"]);
+                }
                 radial=dashboard[payload.key];
                 if (radial != undefined && payload.value != undefined && !isNaN(payload.value)) {
                     radial.setValueAnimated(payload.value);
@@ -270,4 +273,13 @@ function resetAllMinMax() {
 	resetMinMax(radial8);
 	resetMinMax(radial9);
 	return false;
+}
+
+function configureInstrument(config) {
+    instrument=dashboard[config.name];
+    if (instrument != null) {
+    	if (config.title != null)
+    		instrument.setTitleString(conf.title);
+    }
+
 }
