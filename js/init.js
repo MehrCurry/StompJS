@@ -279,7 +279,13 @@ function configureInstrument(config) {
     instrument=dashboard[config.name];
     if (instrument != null) {
     	if (config.title != null)
-    		instrument.setTitleString(conf.title);
+    		instrument.setTitleString(config.title);
+    	if (config.unit != null)
+    		instrument.setUnitString(config.unit);
+    	if (config.max != undefined)
+    		instrument.setMaxValue(config.max.$);
+    	if (config.min != undefined)
+    		instrument.setMinValue(config.min.$);
     }
 
 }
