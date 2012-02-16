@@ -17,6 +17,10 @@ String.prototype.format = function() {
 	return formatted;
 };
 
+String.prototype.endsWith = function(str) {
+	return (this.match(str + "$") == str)
+}
+
 function init() {
 	for ( var item = 1; item <= 8; item++) {
 		var canv = document.createElement("canvas");
@@ -284,8 +288,6 @@ function init() {
 	var login = "";
 	var passcode = "";
 
-	radial2.setValueAnimated(20);
-
 	try {
 		error_callback = function(error) {
 			// display the error's message header:
@@ -293,15 +295,11 @@ function init() {
 		};
 
 		connect_callback = function() {
-			client.send("/queue/test", {
-				priority : 9
-			}, "Hello, Stomp");
 			id = client.subscribe("/topic/observationsWeb", callback);
 			led1.setLedOnOff(true);
 		};
 
 		client.connect(login, passcode, connect_callback, error_callback);
-		radial2.setValueAnimated(30);
 
 		callback = function(message) {
 			// called when the client receives a Stomp message from the server
@@ -309,22 +307,16 @@ function init() {
 				// alert("got message with body " + message.body);
 				var data = message.body;
 				var payload = jQuery.parseJSON(data);
-				if (payload["de.gzockoll.prototype.camel.InstrumentConfiguration"] != undefined) {
-					configureInstrument(payload["de.gzockoll.prototype.camel.InstrumentConfiguration"]);
+				if (payload["de.gzockoll.prototype.camel.measurement.InstrumentConfiguration"] != undefined) {
+					configureInstrument(payload["de.gzockoll.prototype.camel.measurement.InstrumentConfiguration"]);
 				}
-				radial = dashboard[instrumentMapping[payload.key]];
-				if (radial != undefined && payload.value != undefined
-						&& !isNaN(payload.value)) {
-					radial.setValueAnimated(payload.value);
-				} else {
-					console.log(payload.radialvalue + " not a number");
+				if (payload["de.gzockoll.prototype.camel.observation.Measurement"] != undefined) {
+					setValue(payload["de.gzockoll.prototype.camel.observation.Measurement"]);
 				}
 			} else {
 				// display.setText("got empty message")
 			}
 		};
-
-		radial2.setValueAnimated(40);
 	}
 
 	catch (e) {
@@ -341,6 +333,19 @@ function init() {
 	}
 
 }
+
+function setValue(measurement) {
+	var key = measurement.subject.name + "." + measurement.type.$;
+	var value = parseFloat(measurement.quantity.value.$);
+	instrument = dashboard[instrumentMapping[key]];
+	if (instrument != undefined && value != undefined && !isNaN(value)) {
+		instrument.setValueAnimated(value);
+	} else {
+		console.log(value + " not a number");
+	}
+	;
+}
+
 function resetMinMax(gauge) {
 	gauge.resetMinMeasuredValue();
 	gauge.resetMaxMeasuredValue();
@@ -362,8 +367,12 @@ function configureInstrument(config) {
 				instrument.setMaxValue(config.max.$);
 			if (config.min != undefined)
 				instrument.setMinValue(config.min.$);
-			instrument.setArea(convertToSection(config.areas["de.gzockoll.prototype.camel.ColoredRange"]));
-			instrument.setSection(convertToSection(config.sections["de.gzockoll.prototype.camel.ColoredRange"]));
+			if (config.areas != "")
+				instrument
+						.setArea(convertToSection(config.areas["de.gzockoll.prototype.camel.ColoredRange"]));
+			if (config.sections != "")
+				instrument
+						.setSection(convertToSection(config.sections["de.gzockoll.prototype.camel.ColoredRange"]));
 		}
 	} catch (e) {
 		// alert("Fehler: " + e);
@@ -377,13 +386,13 @@ function convertToSection(ranges) {
 		var section = new steelseries.Section(parseInt(a.range.min.$),
 				parseInt(a.range.max.$), "rgba({0},{1},{2},{3})".format(
 						a.rgba.red, a.rgba.green, a.rgba.blue,
-						a.rgba.alpha/256.0))
+						a.rgba.alpha / 256.0))
 		areas.push(section);
 	}
 	return areas;
 
 }
 
-function configureAreas(instrument,ranges) {
+function configureAreas(instrument, ranges) {
 
 }
