@@ -5,7 +5,7 @@ var defaultLedColor = steelseries.LedColor.GREEN;
 var defaultKnobType = steelseries.KnobType.METAL_KNOW;
 var defaultKnobStyle = steelseries.KnobStyle.SILVER;
 
-var dashboard = new Object();
+var instruments = [];
 
 var instrumentMapping = new Object();
 
@@ -62,7 +62,7 @@ function init() {
 			knobType : defaultKnobType,
 			knobStyle : defaultKnobStyle
 		});
-		dashboard[id] = radial;
+		instruments.push(radial);
 	}
 
 	for ( var item = 0; item < 8; item++) {
@@ -91,7 +91,7 @@ function init() {
 			lcdColor : defaultLcdColor,
 			ledColor : defaultLedColor,
 		});
-		dashboard[id] = bar;
+		instruments.push(bar);
 	}
 
 	var display = new steelseries.DisplaySingle('displaySingle', {
@@ -132,156 +132,19 @@ function init() {
 		backgroundColor : defaultBackgroundColor,
 	});
 
-	// Create a second radial gauge
-	var radial2 = new steelseries.Radial('canvas2', {
-		gaugeType : steelseries.GaugeType.TYPE2,
-		maxValue : 50,
-		threshold : 40,
-		thresholdVisible : false,
-		section : Array(steelseries.Section(0, 40, 'rgba(0,255,0,0.3)')),
-		area : Array(steelseries.Section(40, 50, 'rgba(255,0,0,0.5)')),
-		titleString : 'Test',
-		unitString : 'Unit',
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		pointerType : steelseries.PointerType.TYPE2,
-		pointerColor : steelseries.ColorDef.BLUE,
-		lcdColor : steelseries.LcdColor.BLUE2,
-		ledColor : steelseries.LedColor.BLUE_LED,
-	});
+	instrumentMapping['Hazelcast.HITS'] = instruments[0];
+	instrumentMapping['Hazelcast.ENTRIES'] = instruments[1];
 
-	// Create a radial bargraph gauge
-	var radial3 = new steelseries.RadialBargraph('canvas3', {
-		gaugeType : steelseries.GaugeType.TYPE3,
-		maxValue : 60,
-		titleString : "Sekunden",
-		unitString : "",
-		thresholdVisible : false,
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		valueColor : steelseries.ColorDef.YELLOW,
-		lcdColor : steelseries.LcdColor.YELLOW,
-		ledColor : steelseries.LedColor.YELLOW_LED,
-	});
-
-	var radial4 = new steelseries.Radial('canvas4', {
-		titleString : 'Temperatur',
-		unitString : '°C',
-		minValue : -50,
-		maxValue : 50,
-		thresholdVisible : false,
-		minMeasuredValueVisible : true,
-		maxMeasuredValueVisible : true,
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		valueColor : steelseries.ColorDef.YELLOW,
-		lcdColor : steelseries.LcdColor.YELLOW,
-		ledColor : steelseries.LedColor.YELLOW_LED,
-	});
-
-	var radial5 = new steelseries.Radial('canvas5', {
-		titleString : 'Taupunkt',
-		unitString : '°C',
-		minValue : -50,
-		maxValue : 50,
-		thresholdVisible : false,
-		minMeasuredValueVisible : true,
-		maxMeasuredValueVisible : true,
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		valueColor : steelseries.ColorDef.YELLOW,
-		lcdColor : steelseries.LcdColor.YELLOW,
-		ledColor : steelseries.LedColor.YELLOW_LED,
-	});
-
-	var radial6 = new steelseries.Radial('canvas6', {
-		titleString : 'Luftdruck',
-		unitString : 'hPa',
-		minValue : 930,
-		maxValue : 1070,
-		thresholdVisible : false,
-		minMeasuredValueVisible : true,
-		maxMeasuredValueVisible : true,
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		valueColor : steelseries.ColorDef.YELLOW,
-		lcdColor : steelseries.LcdColor.YELLOW,
-		ledColor : steelseries.LedColor.YELLOW_LED,
-	});
-
-	var radial7 = new steelseries.Radial('canvas7', {
-		titleString : 'Wind',
-		unitString : 'm/s',
-		minValue : 0,
-		maxValue : 50,
-		thresholdVisible : false,
-		minMeasuredValueVisible : true,
-		maxMeasuredValueVisible : true,
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		valueColor : steelseries.ColorDef.YELLOW,
-		lcdColor : steelseries.LcdColor.YELLOW,
-		ledColor : steelseries.LedColor.YELLOW_LED,
-	});
-
-	var radial8 = new steelseries.Compass('canvas8', {
-		titleString : 'Windrichtung',
-		unitString : '°',
-		thresholdVisible : false,
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		valueColor : steelseries.ColorDef.YELLOW,
-		lcdColor : steelseries.LcdColor.YELLOW,
-		ledColor : steelseries.LedColor.YELLOW_LED,
-	});
-
-	var radial9 = new steelseries.Radial('canvas9', {
-		titleString : 'Sicht',
-		unitString : 'km',
-		minValue : 0,
-		maxValue : 20,
-		thresholdVisible : false,
-		minMeasuredValueVisible : true,
-		maxMeasuredValueVisible : true,
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		valueColor : steelseries.ColorDef.YELLOW,
-		lcdColor : steelseries.LcdColor.YELLOW,
-		ledColor : steelseries.LedColor.YELLOW_LED,
-	});
-
-	var radial10 = new steelseries.Radial('canvas10', {
-		titleString : 'Durchsatz',
-		unitString : 'msg/s',
-		minValue : 0,
-		maxValue : 20,
-		thresholdVisible : false,
-		minMeasuredValueVisible : true,
-		maxMeasuredValueVisible : true,
-		frameDesign : defaultDesign,
-		backgroundColor : defaultBackgroundColor,
-		valueColor : steelseries.ColorDef.YELLOW,
-		lcdColor : steelseries.LcdColor.YELLOW,
-		ledColor : steelseries.LedColor.YELLOW_LED,
-	});
-
-	instrumentMapping['sekunden'] = 'radial10';
-	instrumentMapping['EDDH.TEMPERATUR'] = 'radial0';
-	instrumentMapping['EDDH.WIND'] = 'radial1';
-	instrumentMapping['EDDH.SICHT'] = 'radial2';
-	instrumentMapping['Messages.DURCHSATZ'] = 'bar5';
-	instrumentMapping['EDDH.LUFTDRUCK'] = 'radial3';
-
-	dashboard["Test1"] = radial1;
-	dashboard["Test2"] = radial2;
-	dashboard["Test3"] = radial3;
-	dashboard["EDDH.TEMPERATUR"] = radial4;
-	dashboard["EDDH.TAUPUNKT"] = radial5;
-	dashboard["EDDH.LUFTDRUCK"] = radial6;
-	dashboard["EDDH.WIND"] = radial7;
-	dashboard["EDDH.WINDRICHTUNG"] = radial8;
-	dashboard["EDDH.SICHT"] = radial9;
-	dashboard["Messages.DURCHSATZ"] = radial10;
+//	dashboard["Test1"] = radial1;
+//	dashboard["Test2"] = radial2;
+//	dashboard["Test3"] = radial3;
+//	dashboard["EDDH.TEMPERATUR"] = radial4;
+//	dashboard["EDDH.TAUPUNKT"] = radial5;
+//	dashboard["EDDH.LUFTDRUCK"] = radial6;
+//	dashboard["EDDH.WIND"] = radial7;
+//	dashboard["EDDH.WINDRICHTUNG"] = radial8;
+//	dashboard["EDDH.SICHT"] = radial9;
+//	dashboard["Messages.DURCHSATZ"] = radial10;
 
 	var url = "ws://localhost:61614/stomp";
 	var client = Stomp.client(url);
@@ -307,11 +170,11 @@ function init() {
 				// alert("got message with body " + message.body);
 				var data = message.body;
 				var payload = jQuery.parseJSON(data);
-				if (payload["de.gzockoll.prototype.camel.measurement.InstrumentConfiguration"] != undefined) {
-					configureInstrument(payload["de.gzockoll.prototype.camel.measurement.InstrumentConfiguration"]);
+				if (payload["de.gzockoll.measurement.InstrumentConfiguration"] != undefined) {
+					configureInstrument(payload["de.gzockoll.measurement.InstrumentConfiguration"]);
 				}
-				if (payload["de.gzockoll.prototype.camel.observation.Measurement"] != undefined) {
-					setValue(payload["de.gzockoll.prototype.camel.observation.Measurement"]);
+				if (payload["de.gzockoll.observation.Measurement"] != undefined) {
+					setValue(payload["de.gzockoll.observation.Measurement"]);
 				}
 			} else {
 				// display.setText("got empty message")
@@ -337,7 +200,7 @@ function init() {
 function setValue(measurement) {
 	var key = measurement.subject.name + "." + measurement.type.$;
 	var value = parseFloat(measurement.quantity.value.$);
-	instrument = dashboard[instrumentMapping[key]];
+	var instrument = instrumentMapping[key];
 	if (instrument != undefined && value != undefined && !isNaN(value)) {
 		instrument.setValueAnimated(value);
 	} else {
@@ -357,7 +220,7 @@ function resetAllMinMax() {
 
 function configureInstrument(config) {
 	try {
-		instrument = dashboard[instrumentMapping[config.name]];
+		var instrument = instrumentMapping[config.name];
 		if (instrument != null) {
 			if (config.title != null)
 				instrument.setTitleString(config.title);
@@ -375,7 +238,7 @@ function configureInstrument(config) {
 						.setSection(convertToSection(config.sections["de.gzockoll.prototype.camel.ColoredRange"]));
 		}
 	} catch (e) {
-		// alert("Fehler: " + e);
+		alert("Fehler: " + e);
 	}
 }
 
